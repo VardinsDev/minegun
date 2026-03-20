@@ -1,5 +1,6 @@
 package com.minegun.demo;
 
+import com.minegun.src.Rifle;
 import net.minestom.server.Auth;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
@@ -25,10 +26,11 @@ public class Main {
         GlobalEventHandler eventHandler = MinecraftServer.getGlobalEventHandler();
 
         eventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
-           event.setSpawningInstance(instanceContainer);
-           event.getPlayer().setPermissionLevel(4);
+            event.setSpawningInstance(instanceContainer);
+            event.getPlayer().setPermissionLevel(4);
             System.out.println(event.getPlayer().getPermissionLevel());
-           event.getPlayer().setRespawnPoint(new Pos(0,42, 0));
+            event.getPlayer().setRespawnPoint(new Pos(0,42, 0));
+            Rifle.givePlayer(event.getPlayer());
         });
 
         eventHandler.addListener(PlayerGameModeRequestEvent.class, event -> {

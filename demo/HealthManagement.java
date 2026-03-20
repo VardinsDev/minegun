@@ -14,18 +14,12 @@ public class HealthManagement {
 
             BossBar healthBar = BossBar.bossBar(
                     Component.text("Health"),
-                    1f,
-                    BossBar.Color.RED,
+                    100f,
+                    BossBar.Color.PINK,
                     BossBar.Overlay.PROGRESS
             );
-            BossBar shieldBar = BossBar.bossBar(
-                    Component.text("Shield"),
-                    1f,
-                    BossBar.Color.BLUE,
-                    BossBar.Overlay.PROGRESS
-            );
+
             bossBarManager.addBossBar(event.getPlayer(), healthBar);
-            bossBarManager.addBossBar(event.getPlayer(), shieldBar);
         });
     }
 }

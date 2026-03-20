@@ -36,6 +36,8 @@ public class Main {
                event.getPlayer().setGameMode(event.getRequestedGameMode());
            }
         });
+        HealthManagement healthManagement = new HealthManagement();
+        healthManagement.bossBarMaker(eventHandler);
 
         minecraftServer.start("0.0.0.0", 25565);
     }

@@ -1,4 +1,23 @@
 package com.minegun.demo;
 
+import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
+import net.minestom.server.adventure.bossbar.BossBarManager;
+import net.minestom.server.entity.Player;
+import net.minestom.server.event.GlobalEventHandler;
+import net.minestom.server.event.player.PlayerLoadedEvent;
+
 public class HealthManagement {
+    public void bossBarMaker(Player player, GlobalEventHandler eventHandler) {
+        eventHandler.addListener(PlayerLoadedEvent.class, event -> {
+            BossBarManager bossBarManager = new BossBarManager();
+
+            BossBar healthBar = BossBar.bossBar(
+                    Component.text("Health"),
+                    100f,
+                    BossBar.Color.PINK,
+                    BossBar.Overlay.PROGRESS
+            );
+        });
+    }
 }

@@ -1,6 +1,6 @@
 package com.minegun.demo;
 
-import com.minegun.src.Rifle;
+import com.minegun.Rifle;
 import net.minestom.server.Auth;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
@@ -24,6 +24,8 @@ public class Main {
         instanceContainer.setChunkSupplier(LightingChunk::new); // adds lighting
 
         GlobalEventHandler eventHandler = MinecraftServer.getGlobalEventHandler();
+
+        Rifle.register(eventHandler, instanceContainer);
 
         eventHandler.addListener(AsyncPlayerConfigurationEvent.class, event -> {
             event.setSpawningInstance(instanceContainer);

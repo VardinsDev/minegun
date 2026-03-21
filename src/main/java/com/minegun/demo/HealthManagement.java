@@ -8,18 +8,22 @@ import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.player.PlayerLoadedEvent;
 
 public class HealthManagement {
+    BossBar healthBar;
     public void bossBarMaker(GlobalEventHandler eventHandler) {
         eventHandler.addListener(PlayerLoadedEvent.class, event -> {
             BossBarManager bossBarManager = new BossBarManager();
 
-            BossBar healthBar = BossBar.bossBar(
+            healthBar = BossBar.bossBar(
                     Component.text("Health"),
-                    100f,
+                    1f,
                     BossBar.Color.PINK,
                     BossBar.Overlay.PROGRESS
             );
 
             bossBarManager.addBossBar(event.getPlayer(), healthBar);
         });
+    }
+    public void damage(Player player, double hitDamage) {
+        healthBar.progress((float) (healthBar.progress() - hitDamage));
     }
 }

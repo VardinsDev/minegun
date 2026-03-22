@@ -2,13 +2,18 @@ package com.minegun;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
 import net.minestom.server.adventure.bossbar.BossBarManager;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.player.PlayerLoadedEvent;
 import net.minestom.server.event.player.PlayerTickEvent;
+import net.minestom.server.potion.Potion;
+import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.tag.Tag;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -59,11 +64,25 @@ public class HealthManagement {
         if (shield < hitDamage) {
             shield = 0;
             overShield = shield - hitDamage;
-            health -= overShield;
+            health += overShield;
         } else if (shield == hitDamage) {
             shield = 0;
         } else {
             shield -= hitDamage;
+        }
+
+        if (health <= 0) {
+            player.teleport(player.getRespawnPoint());
+            player.showTitle(
+                    Title.title(
+                            Component.text("You DIED").color(NamedTextColor.RED),
+                            Component.text(""),
+                            Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(3), Duration.ofMillis(500))
+                    )
+            );
+            player.addEffect(new Potion(PotionEffect.BLINDNESS, 1, 100));
+            health = 100;
+            shield = 100;
         }
 
         player.setTag(healthTag, health);

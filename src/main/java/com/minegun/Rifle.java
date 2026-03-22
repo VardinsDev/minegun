@@ -33,6 +33,7 @@ public class Rifle {
                 .set(DataComponents.LORE, List.of(Component.text("Custom Made Weapon"), Component.text("By: VardinsDev")))
                 .build();
         player.setItemInHand(PlayerHand.MAIN, item);
+        minegunLogger.success(player.getUsername() + " has been given a Rifle!");
     }
     private static final long cooldownMs = 25L;
     private static final HashMap<UUID, Long> lastShotTime = new HashMap<>();

@@ -1,6 +1,5 @@
 package com.minegun;
 
-import com.minegun.demo.HealthManagement;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.component.DataComponents;
 import net.minestom.server.coordinate.Pos;
@@ -22,7 +21,6 @@ import net.minestom.server.timer.TaskSchedule;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +34,7 @@ public class Rifle {
                 .build();
         player.setItemInHand(PlayerHand.MAIN, item);
     }
-    private static long cooldownMs = 25L;
+    private static final long cooldownMs = 25L;
     private static final HashMap<UUID, Long> lastShotTime = new HashMap<>();
 
     public static void register(GlobalEventHandler eventHandler, InstanceContainer instanceContainer) {
@@ -76,6 +74,9 @@ public class Rifle {
                             )
                     );
                     hit.damage(DamageType.ARROW, 12f);
+                    hit.heal();
+                    HealthManagement healthManagement = new HealthManagement();
+                    healthManagement.damage(hit, 25);
 
                     MinecraftServer.getSchedulerManager()
                             .buildTask(() -> {

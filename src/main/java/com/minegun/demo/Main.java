@@ -1,5 +1,6 @@
 package com.minegun.demo;
 
+import com.minegun.HealthManagement;
 import com.minegun.Rifle;
 import net.minestom.server.Auth;
 import net.minestom.server.MinecraftServer;
@@ -40,8 +41,11 @@ public class Main {
                event.getPlayer().setGameMode(event.getRequestedGameMode());
            }
         });
+
+        //Health Stuff
         HealthManagement healthManagement = new HealthManagement();
         healthManagement.bossBarMaker(eventHandler);
+        healthManagement.tickUpdate(eventHandler);
 
         minecraftServer.start("0.0.0.0", 25565);
     }

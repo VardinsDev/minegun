@@ -7,6 +7,7 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.event.GlobalEventHandler;
 import net.minestom.server.event.player.PlayerLoadedEvent;
 import net.minestom.server.event.player.PlayerTickEvent;
+import net.minestom.server.tag.Tag;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -17,8 +18,8 @@ public class HealthManagement {
     HashMap<UUID, BossBar> healthBars = new HashMap<>();
     HashMap<UUID, BossBar> shieldBars = new HashMap<>();
 
-    HashMap<UUID, Double> healthAmounts = new HashMap<>();
-    HashMap<UUID, Double> shieldAmounts = new HashMap<>();
+    Tag<Double> healthTag = Tag.Double("health");
+    Tag<Double> shieldTag = Tag.Double("shield");
 
     BossBar healthBar;
     BossBar shieldBar;
@@ -46,14 +47,14 @@ public class HealthManagement {
             healthBars.put(event.getPlayer().getUuid(), healthBar);
             shieldBars.put(event.getPlayer().getUuid(), shieldBar);
 
-            healthAmounts.put(event.getPlayer().getUuid(), 100.0);
-            shieldAmounts.put(event.getPlayer().getUuid(), 100.0);
+            event.getPlayer().setTag(healthTag, 100.0);
+            event.getPlayer().setTag(shieldTag, 100.0);
       });
     }
     public void damage(Player player, double hitDamage) {
         double shield = getShield(player);
         double health = getHealth(player);
-        double overShield = 0;
+        double overShield;
 
         if (shield < hitDamage) {
             shield = 0;
@@ -65,8 +66,8 @@ public class HealthManagement {
             shield -= hitDamage;
         }
 
-        healthAmounts.put(player.getUuid(), health);
-        shieldAmounts.put(player.getUuid(), shield);
+        player.setTag(healthTag, health);
+        player.setTag(shieldTag, shield);
     }
 
     public void tickUpdate(GlobalEventHandler eventHandler) {
@@ -78,19 +79,16 @@ public class HealthManagement {
                return;
            }
 
-           if (shieldAmounts == null) {
-               return;
-           }
-           playerHealthBar.progress((float) (healthAmounts.get(event.getPlayer().getUuid()) / 100));
-           playerShieldBar.progress((float) (shieldAmounts.get(event.getPlayer().getUuid()) / 100));
+           playerHealthBar.progress((float) (event.getPlayer().getTag(healthTag) / 100));
+           playerShieldBar.progress((float) (event.getPlayer().getTag(shieldTag) / 100));
         });
     }
 
     public double getHealth(Player player) {
-        return healthAmounts.get(player.getUuid());
+        return player.getTag(healthTag);
     }
 
     public double getShield(Player player) {
-        return shieldAmounts.get(player.getUuid());
+        return player.getTag(shieldTag);
     }
 }
